@@ -1,0 +1,15 @@
+syntax = "proto3";
+option go_package = ".;example";
+
+service Dummy{
+  rpc Run(TestRequest)returns(TestResponse){}
+}
+
+message TestRequest {
+  int32 id = 1;
+}
+
+message TestResponse {
+  int32 id = 1;
+  string name = 2;
+}
