@@ -29,11 +29,16 @@ func (s *service) execute() string {
 }
 
 // WireTypeName is wire var type name
-func (s *service) WireTypeName() string {
+func (s *service) WireGRPCTypeName() string {
 	return "GrpcClientConn"
+}
+
+// WireTypeName is wire var type name
+func (s *service) WireHTTPTypeName() string {
+	return "HttpClientConn"
 }
 
 // ProviderName is wire provider func name
 func (s *service) ProviderName() string {
-	return "NewWire" + s.Name + "Client"
+	return "NewWire" + s.Name
 }

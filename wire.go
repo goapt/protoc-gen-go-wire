@@ -1,15 +1,13 @@
 package main
 
 import (
-	"regexp"
-	"strings"
-
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/types/descriptorpb"
 )
 
 const (
 	grpcPkg            = protogen.GoImportPath("google.golang.org/grpc")
+	kratosPkg          = protogen.GoImportPath("github.com/go-kratos/kratos/v2/transport/http")
 	deprecationComment = "// Deprecated: Do not use."
 )
 
@@ -26,7 +24,7 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) *protogen.Generated
 	g.P()
 	g.P("// This is a compile-time assertion to ensure that this generated file")
 	g.P("// is compatible with goapt/protoc-gen-go-wire package it is being compiled against.")
-	g.P("// ", grpcPkg.Ident(""))
+	g.P("// ", grpcPkg.Ident(""), kratosPkg.Ident(""))
 	g.P()
 
 	for _, service := range file.Services {
@@ -48,14 +46,4 @@ func genService(gen *protogen.Plugin, file *protogen.File, g *protogen.Generated
 	}
 
 	g.P(sd.execute())
-}
-
-var matchFirstCap = regexp.MustCompile("([A-Z])([A-Z][a-z])")
-var matchAllCap = regexp.MustCompile("([a-z0-9])([A-Z])")
-
-func toSnakeCase(input string) string {
-	output := matchFirstCap.ReplaceAllString(input, "${1}_${2}")
-	output = matchAllCap.ReplaceAllString(output, "${1}_${2}")
-	output = strings.ReplaceAll(output, "-", "_")
-	return strings.ToLower(output)
 }

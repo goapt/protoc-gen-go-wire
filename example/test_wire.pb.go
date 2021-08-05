@@ -3,15 +3,21 @@
 package example
 
 import (
+	http "github.com/go-kratos/kratos/v2/transport/http"
 	grpc "google.golang.org/grpc"
 )
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with goapt/protoc-gen-go-wire package it is being compiled against.
-// grpc.
+// grpc.http.
 
 type GrpcClientConn *grpc.ClientConn
+type HttpClientConn *http.Client
 
 func NewWireDummyClient(client GrpcClientConn) DummyClient {
 	return NewDummyClient((*grpc.ClientConn)(client))
+}
+
+func NewWireDummyHTTPClient(client HttpClientConn) DummyHTTPClient {
+	return NewDummyHTTPClient((*http.Client)(client))
 }
