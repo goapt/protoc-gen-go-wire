@@ -11,9 +11,10 @@ import (
 var tpl string
 
 type service struct {
-	Name     string // Greeter
-	FullName string // helloworld.Greeter
-	FilePath string // api/helloworld/helloworld.proto
+	Name        string // Greeter
+	FullName    string // helloworld.Greeter
+	FilePath    string // api/helloworld/helloworld.proto
+	HasHTTPRule bool
 }
 
 func (s *service) execute() string {
@@ -28,12 +29,12 @@ func (s *service) execute() string {
 	return buf.String()
 }
 
-// WireTypeName is wire var type name
+// WireGRPCTypeName is wire var type name
 func (s *service) WireGRPCTypeName() string {
 	return "GrpcClientConn"
 }
 
-// WireTypeName is wire var type name
+// WireHTTPTypeName is wire var type name
 func (s *service) WireHTTPTypeName() string {
 	return "HttpClientConn"
 }

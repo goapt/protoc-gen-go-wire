@@ -1,7 +1,9 @@
 package main
 
 import (
+	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/descriptorpb"
 )
 
@@ -40,10 +42,26 @@ func genService(gen *protogen.Plugin, file *protogen.File, g *protogen.Generated
 	}
 	// HTTP Server.
 	sd := &service{
-		Name:     s.GoName,
-		FullName: string(s.Desc.FullName()),
-		FilePath: file.Desc.Path(),
+		Name:        s.GoName,
+		FullName:    string(s.Desc.FullName()),
+		FilePath:    file.Desc.Path(),
+		HasHTTPRule: hasHTTPRule(file.Services),
 	}
 
 	g.P(sd.execute())
+}
+
+func hasHTTPRule(services []*protogen.Service) bool {
+	for _, service := range services {
+		for _, method := range service.Methods {
+			if method.Desc.IsStreamingClient() || method.Desc.IsStreamingServer() {
+				continue
+			}
+			rule, ok := proto.GetExtension(method.Desc.Options(), annotations.E_Http).(*annotations.HttpRule)
+			if rule != nil && ok {
+				return true
+			}
+		}
+	}
+	return false
 }

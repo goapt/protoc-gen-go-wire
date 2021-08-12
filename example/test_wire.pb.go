@@ -12,12 +12,7 @@ import (
 // grpc.http.
 
 type GrpcClientConn *grpc.ClientConn
-type HttpClientConn *http.Client
 
 func NewWireDummyClient(client GrpcClientConn) DummyClient {
 	return NewDummyClient((*grpc.ClientConn)(client))
-}
-
-func NewWireDummyHTTPClient(client HttpClientConn) DummyHTTPClient {
-	return NewDummyHTTPClient((*http.Client)(client))
 }
