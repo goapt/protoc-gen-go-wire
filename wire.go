@@ -26,7 +26,13 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) *protogen.Generated
 	g.P()
 	g.P("// This is a compile-time assertion to ensure that this generated file")
 	g.P("// is compatible with goapt/protoc-gen-go-wire package it is being compiled against.")
-	g.P("// ", grpcPkg.Ident(""), kratosPkg.Ident(""))
+
+	if hasHTTPRule(file.Services) {
+		g.P("// ", grpcPkg.Ident(""), kratosPkg.Ident(""))
+	} else {
+		g.P("// ", grpcPkg.Ident(""))
+	}
+
 	g.P()
 
 	for _, service := range file.Services {

@@ -1,13 +1,13 @@
 syntax = "proto3";
 option go_package = ".;example";
 
-//import "google/api/annotations.proto";
+import "google/api/annotations.proto";
 
 service Dummy{
   rpc Run(TestRequest) returns(TestResponse) {
-//    option (google.api.http) = {
-//      get: "/helloworld"
-//    };
+    option (google.api.http) = {
+      get: "/helloworld"
+    };
   }
 }
 
